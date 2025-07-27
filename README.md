@@ -38,7 +38,7 @@ Now you're free to use it within your project:
     lidarr_docker_volumes:
       - "{{ lidarr_docker_base_dir }}/config:/config"
       # The default way
-      - '/path/to/tv-series:/tv'
+      - '/path/to/music:/music'
       - '/path/to/download-client-downloads:/downloads'
       # Better, for atomic moves/hard links
       # See https://wiki.servarr.com/docker-guide#consistent-and-well-planned-paths
