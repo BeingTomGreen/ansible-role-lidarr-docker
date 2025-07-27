@@ -9,7 +9,7 @@ lidarr_docker_environment:
 
 # Volume mappings
 # If you use a named volume, it will be attached as an external volume and must already exist
-slidarr_docker_volumes:
+lidarr_docker_volumes:
   - "{{ lidarr_docker_base_dir }}/config:/config"
   # The default way
   - '/path/to/music:/music'
