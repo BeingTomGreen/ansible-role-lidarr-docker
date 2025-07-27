@@ -1,0 +1,48 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+{{ ansible_managed | comment() }}
+
+services:
+  lidarr:
+    image: {{ lidarr_docker_image }}
+    container_name: {{ lidarr_docker_container_name }}
+    restart: {{ lidarr_docker_restart_policy }}
+    {% if lidarr_docker_ports | length > 0 %}
+    ports:
+      {% for port in lidarr_docker_ports %}
+      - {{ port }}
+      {% endfor %}
+    {% endif %}
+    {% if lidarr_docker_networks | length > 0 %}
+    networks:
+      {% for net in lidarr_docker_networks %}
+      - {{ net }}
+      {% endfor %}
+    {% endif %}
+    volumes:
+      {% for vol in lidarr_docker_volumes %}
+      - {{ vol }}
+      {% endfor %}
+    environment:
+      {% for key, value in lidarr_docker_environment.items() %}
+      {{ key }}: "{{ value }}"
+      {% endfor %}
+    {% if lidarr_docker_depends_on %}
+    depends_on:
+      {% for dep in lidarr_docker_depends_on %}
+      - {{ dep }}
+      {% endfor %}
+    {% endif %}
+    {% if lidarr_docker_labels %}
+    labels:
+      {% for label in lidarr_docker_labels %}
+      - {{ label }}
+      {% endfor %}
+    {% endif %}
+{% if lidarr_docker_networks | length > 0 %}
+
+networks:
+  {% for net in lidarr_docker_networks %}
+  {{ net }}:
+    external: true
+  {% endfor %}
+{% endif %}

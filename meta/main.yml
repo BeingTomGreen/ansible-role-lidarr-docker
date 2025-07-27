@@ -1,0 +1,23 @@
+---
+
+galaxy_info:
+  author: Tom Green
+  description: A simple role for running Lidarr via Docker compose.
+
+  role_name: lidarr_docker
+  namespace: beingtomgreen
+  standalone: true
+
+  license: MIT
+
+  min_ansible_version: "2.12"
+
+  galaxy_tags:
+    - lidarr
+    - docker
+    - compose
+
+dependencies: []
+
+collections:
+  - community.docker

@@ -1,0 +1,55 @@
+---
+
+# Environment variables for Lidarr
+# See https://docs.linuxserver.io/images/docker-lidarr/
+lidarr_docker_environment:
+  PUID: '1000'
+  PGID: '1000'
+  TZ: 'Etc/UTC'
+
+# Volume mappings
+# If you use a named volume, it will be attached as an external volume and must already exist
+slidarr_docker_volumes:
+  - "{{ lidarr_docker_base_dir }}/config:/config"
+  # The default way
+  - '/path/to/tv-series:/tv'
+  - '/path/to/download-client-downloads:/downloads'
+  # Better, for atomic moves/hard links
+  # See https://wiki.servarr.com/docker-guide#consistent-and-well-planned-paths
+  # See https://trash-guides.info/File-and-Folder-Structure/Hardlinks-and-Instant-Moves/
+  # - '/path/to/data:/data'
+
+# The ports to pass through, can be an empty list if you don't need to expose ports
+lidarr_docker_ports:
+  - '8686:8686'
+
+# User that will run Lidarr
+lidarr_docker_user: "{{ ansible_user }}"
+
+# Base path for deployment
+lidarr_docker_base_dir: '/srv/lidarr_docker'
+
+# Docker image
+lidarr_docker_image: 'lscr.io/linuxserver/lidarr:latest'
+
+# Docker container name
+lidarr_docker_container_name: 'lidarr'
+
+# Networks to attach the container to
+lidarr_docker_networks: []
+# Example:
+# lidarr_docker_networks:
+#  - 'mediarr'
+
+# Optional depends on
+lidarr_docker_depends_on: []
+
+# Define our restart policy
+lidarr_docker_restart_policy: 'unless-stopped'
+
+# Define labels for the Lidarr container
+lidarr_docker_labels: []
+# Example:
+# lidarr_docker_labels:
+#  - traefik.enable=true
+#  - traefik.http.routers.traefik-https.entrypoints=https

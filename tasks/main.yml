@@ -1,0 +1,22 @@
+---
+
+- name: Ensure base Lidarr directory exists
+  ansible.builtin.file:
+    path: "{{ lidarr_docker_base_dir }}"
+    state: 'directory'
+    owner: "{{ lidarr_docker_user }}"
+    group: "{{ lidarr_docker_user }}"
+    mode: '0755'
+
+- name: Ensure Lidarr compose file is present
+  ansible.builtin.template:
+    src: "compose.yml.j2"
+    dest: "{{ lidarr_docker_base_dir }}/compose.yml"
+    owner: "{{ lidarr_docker_user }}"
+    group: "{{ lidarr_docker_user }}"
+    mode: '0644'
+
+- name: Ensure Lidarr is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ lidarr_docker_base_dir }}"
+    state: 'present'
