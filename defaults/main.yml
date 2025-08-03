@@ -1,55 +1,92 @@
 ---
 
-# Environment variables for Lidarr
-# See https://docs.linuxserver.io/images/docker-lidarr/
-lidarr_docker_environment:
-  PUID: '1000'
-  PGID: '1000'
-  TZ: 'Etc/UTC'
+# Specifies container capabilities to add/drop
+# See: https://man7.org/linux/man-pages/man7/capabilities.7.html
+lidarr_docker_cap_add: []
+lidarr_docker_cap_drop: []
 
-# Volume mappings
-# If you use a named volume, it will be attached as an external volume and must already exist
-lidarr_docker_volumes:
-  - "{{ lidarr_docker_base_dir }}/config:/config"
-  # The default way
-  - '/path/to/music:/music'
-  - '/path/to/download-client-downloads:/downloads'
-  # Better, for atomic moves/hard links
-  # See https://wiki.servarr.com/docker-guide#consistent-and-well-planned-paths
-  # See https://trash-guides.info/File-and-Folder-Structure/Hardlinks-and-Instant-Moves/
-  # - '/path/to/data:/data'
-
-# The ports to pass through, can be an empty list if you don't need to expose ports
-lidarr_docker_ports:
-  - '8686:8686'
-
-# User that will run Lidarr
-lidarr_docker_user: "{{ ansible_user }}"
-
-# Base path for deployment
-lidarr_docker_base_dir: '/srv/lidarr_docker'
-
-# Docker image
-lidarr_docker_image: 'lscr.io/linuxserver/lidarr:latest'
-
-# Docker container name
+# Set container name
 lidarr_docker_container_name: 'lidarr'
 
-# Networks to attach the container to
-lidarr_docker_networks: []
-# Example:
-# lidarr_docker_networks:
-#  - 'mediarr'
-
-# Optional depends on
+# Set services container depends on
 lidarr_docker_depends_on: []
 
-# Define our restart policy
-lidarr_docker_restart_policy: 'unless-stopped'
+# Set container devices
+# See: https://docs.linuxserver.io/images/docker-lidarr/#hardware-acceleration
+lidarr_docker_devices: []
+# Example:
+# lidarr_docker_devices:
+# - '/dev/dri:/dev/dri'
+# - '/dev/kfd:/dev/kfd'
 
-# Define labels for the Lidarr container
+# Set container PUID and PGID
+# See https://docs.linuxserver.io/general/understanding-puid-and-pgid/
+lidarr_docker_env_puid: 1000
+lidarr_docker_env_pgid: 1000
+
+# Set container timezone env
+lidarr_docker_env_timezone: 'Etc/UTC'
+
+# Set additional Lidarr envs
+# Additional container environment variables
+lidarr_docker_extra_environment_vars: []
+# Example:
+# lidarr_docker_extra_environment_vars:
+#   SOME_OTHER_VAR: 'A_VALUE'
+
+# Set container image options
+lidarr_docker_image: 'lscr.io/linuxserver/lidarr'
+lidarr_docker_image_tag: 'latest'
+
+# Set container labels
 lidarr_docker_labels: []
 # Example:
 # lidarr_docker_labels:
-#  - traefik.enable=true
-#  - traefik.http.routers.traefik-https.entrypoints=https
+#  traefik.enable: 'true'
+#  traefik.http.routers.traefik-https.entrypoints: 'https'
+
+# Set container network mode
+# Can be: null (if using port mapping/networks) 'none', 'host', 'service:<service-name>' or 'container:<container-name>'
+# lidarr_docker_network_mode will need to be null if you want to specify ports etc
+lidarr_docker_network_mode:
+
+# Set container external networks
+lidarr_docker_external_networks: []
+# Example:
+# lidarr_docker_external_networks:
+#  - 'mediarr'
+
+# Set container ports
+lidarr_docker_ports:
+  - '8686:8686'
+
+# Set container pull policy
+# See: https://docs.docker.com/reference/compose-file/services/#pull_policy
+# Can be: always, never, missing, build, daily, weekly, every_<duration>
+lidarr_docker_pull_policy: 'missing'
+
+# Set container restart policy
+lidarr_docker_restart_policy: 'unless-stopped'
+
+# Set container runtime
+lidarr_docker_runtime: 'runc'
+
+# Set additional container volumes
+lidarr_docker_additional_volumes: []
+# Example:
+# lidarr_docker_additional_volumes:
+# - '/path/to/tv:/tv'
+# - '/path/to/movies:/movies'
+# - '/path/to/music:/music'
+# - '/path/to/usenet:/usenet'
+# - '/path/to/torrents:/torrents'
+
+# User that will own the compose files
+lidarr_docker_user: "{{ ansible_user }}"
+
+# Base path for deployment
+lidarr_docker_base_directory: '/srv/lidarr_docker'
+
+# Control image pruning
+lidarr_docker_prune_images: 'false'
+lidarr_docker_prune_until: '72h'

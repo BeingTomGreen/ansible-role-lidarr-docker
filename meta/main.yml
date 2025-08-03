@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: Tom Green
-  description: A simple role for running Lidarr via Docker compose.
+  description: A simple ansible role for running Lidarr via Docker compose using the LinuxServer.io Lidarr image
 
   role_name: lidarr_docker
   namespace: beingtomgreen
