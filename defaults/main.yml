@@ -88,5 +88,5 @@ lidarr_docker_user: "{{ ansible_user }}"
 lidarr_docker_base_directory: '/srv/lidarr_docker'
 
 # Control image pruning
-lidarr_docker_prune_images: 'false'
+lidarr_docker_prune_images: False
 lidarr_docker_prune_until: '72h'
