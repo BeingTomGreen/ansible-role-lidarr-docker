@@ -88,4 +88,4 @@ lidarr_docker_user: "{{ ansible_user }}"
 lidarr_docker_base_directory: '/srv/lidarr_docker'
 
 # Control Image updates
-lidarr_docker_update_image: False
+lidarr_docker_update_image: false

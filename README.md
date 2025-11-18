@@ -106,7 +106,7 @@ Seriously, take a look at [`defaults/main.yml`](defaults/main.yml), it's obnoxio
 
     lidarr_docker_base_directory: '/opt/lidarr_docker'
 
-    lidarr_docker_update_image: True
+    lidarr_docker_update_image: true
 
   roles:
     - role: beingtomgreen.lidarr_docker
