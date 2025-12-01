@@ -1,76 +1,114 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 
-services:
-  lidarr:
-    {% if lidarr_docker_cap_add | length > 0 %}
-    cap_add:
-      {% for capability in lidarr_docker_cap_add %}
-      - {{ capability }}
-      {% endfor %}
-    {% endif %}
-    {% if lidarr_docker_cap_drop | length > 0 %}
-    cap_drop:
-      {% for capability in lidarr_docker_cap_drop %}
-      - {{ capability }}
-      {% endfor %}
-    {% endif %}
-    container_name: {{ lidarr_docker_container_name }}
-    {% if lidarr_docker_depends_on | length > 0 %}
-    depends_on:
-      {% for dep in lidarr_docker_depends_on %}
-      - {{ dep }}
-      {% endfor %}
-    {% endif %}
-    {% if lidarr_docker_devices %}
-    devices:
-      {% for device in lidarr_docker_devices %}
-      - {{ device }}
-      {% endfor %}
-    {% endif %}
-    environment:
-      PUID: "{{ lidarr_docker_env_puid }}"
-      PGID: "{{ lidarr_docker_env_pgid }}"
-      TZ: "{{ lidarr_docker_env_timezone }}"
-      {% if lidarr_docker_extra_environment_vars | length > 0 %}
-      {% for env, value in lidarr_docker_extra_environment_vars.items() %}
-      {{ env }}: "{{ value }}"
-      {% endfor %}
-      {% endif %}
-    image: {{ lidarr_docker_image }}:{{ lidarr_docker_image_tag }}
-    {% if lidarr_docker_labels | length > 0 %}
-    labels:
-      {% for label, value in lidarr_docker_labels.items() %}
-      {{ label }}: "{{ value }}"
-      {% endfor %}
-    {% endif %}
-    {% if lidarr_docker_external_networks | length > 0 and not (lidarr_docker_network_mode | default('')) %}
-    networks:
-      {% for net in lidarr_docker_external_networks %}
-      - {{ net }}
-      {% endfor %}
-    {% elif lidarr_docker_network_mode %}
-    network_mode: {{ lidarr_docker_network_mode | default('host') }}
-    {% endif %}
-    {% if lidarr_docker_ports | length > 0 and not (lidarr_docker_network_mode | default('')) %}
-    ports:
-      {% for port in lidarr_docker_ports %}
-      - {{ port }}
-      {% endfor %}
-    {% endif %}
-    pull_policy: {{ lidarr_docker_pull_policy }}
-    restart: {{ lidarr_docker_restart_policy }}
-    volumes:
-      - {{ lidarr_docker_base_directory }}/config:/config
-      {% if lidarr_docker_additional_volumes | length > 0 %}
-      {% for vol in lidarr_docker_additional_volumes %}
-      - {{ vol }}
-      {% endfor %}
-      {% endif %}
-{% if lidarr_docker_external_networks | length > 0 and not (lidarr_docker_network_mode | default('')) %}
+---
 
+services:
+  {{ lidarr_docker_service_name }}:
+{% if lidarr_docker_cpu_count %}
+    cpu_count: {{ lidarr_docker_cpu_count }}
+{% endif %}
+{% if lidarr_docker_cpu_percentage %}
+    cpu_percent: {{ lidarr_docker_cpu_percentage }}
+{% endif %}
+{% if lidarr_docker_cpu_shares %}
+    cpu_shares: {{ lidarr_docker_cpu_shares }}
+{% endif %}
+{% if lidarr_docker_cpu_period %}
+    cpu_period: {{ lidarr_docker_cpu_period }}
+{% endif %}
+{% if lidarr_docker_cpu_quota %}
+    cpu_quota: {{ lidarr_docker_cpu_quota }}
+{% endif %}
+{% if lidarr_docker_cpu_rt_runtime %}
+    cpu_rt_runtime: {{ lidarr_docker_cpu_rt_runtime }}
+{% endif %}
+{% if lidarr_docker_cpu_rt_period %}
+    cpu_rt_period: {{ lidarr_docker_cpu_rt_period }}
+{% endif %}
+{% if lidarr_docker_cpus %}
+    cpus: {{ lidarr_docker_cpus }}
+{% endif %}
+{% if lidarr_docker_cpuset %}
+    cpuset: {{ lidarr_docker_cpuset }}
+{% endif %}
+{% if lidarr_docker_cap_add %}
+    cap_add:
+{{ lidarr_docker_cap_add | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_cap_drop %}
+    cap_drop:
+{{ lidarr_docker_cap_drop | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_container_name %}
+    container_name: {{ lidarr_docker_container_name }}
+{% endif %}
+{% if lidarr_docker_devices %}
+    devices:
+{{ lidarr_docker_devices | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_dns %}
+    dns: {{ lidarr_docker_dns if lidarr_docker_dns is string else lidarr_docker_dns | to_yaml }}
+{% endif %}
+{% if lidarr_docker_dns_opt %}
+    dns_opt: {{ lidarr_docker_dns_opt if lidarr_docker_dns_opt is string else lidarr_docker_dns_opt | to_yaml }}
+{% endif %}
+{% if lidarr_docker_dns_search %}
+    dns_search: {{ lidarr_docker_dns_search if lidarr_docker_dns_search is string else lidarr_docker_dns_search | to_yaml }}
+{% endif %}
+{% if lidarr_docker_domainname %}
+    domainname: {{ lidarr_docker_domainname }}
+{% endif %}
+    environment:
+{{ lidarr_docker_environment | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% if lidarr_docker_hostname %}
+    hostname: {{ lidarr_docker_hostname }}
+{% endif %}
+    image: {{ lidarr_docker_image }}
+{% if lidarr_docker_labels %}
+    labels:
+{{ lidarr_docker_labels | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_mem_limit %}
+    mem_limit: {{ lidarr_docker_mem_limit }}
+{% endif %}
+{% if lidarr_docker_mem_reservation %}
+    mem_reservation: {{ lidarr_docker_mem_reservation }}
+{% endif %}
+{% if lidarr_docker_mem_swappiness %}
+    mem_swappiness: {{ lidarr_docker_mem_swappiness }}
+{% endif %}
+{% if lidarr_docker_memswap_limit %}
+    memswap_limit: {{ lidarr_docker_memswap_limit }}
+{% endif %}
+{% if lidarr_docker_network_mode %}
+    network_mode: {{ lidarr_docker_network_mode }}
+{% endif %}
+{% if lidarr_docker_networks %}
+    networks:
+{{ lidarr_docker_networks | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_ports %}
+    ports:
+{{ lidarr_docker_ports | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if lidarr_docker_pull_policy %}
+    pull_policy: {{ lidarr_docker_pull_policy }}
+{% endif %}
+{% if lidarr_docker_restart_policy %}
+    restart: {{ lidarr_docker_restart_policy }}
+{% endif %}
+{% if lidarr_docker_runtime %}
+    runtime: {{ lidarr_docker_runtime }}
+{% endif %}
+{% if lidarr_docker_volumes %}
+    volumes:
+{{ lidarr_docker_volumes | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+
+{% if lidarr_docker_networks %}
 networks:
-  {% for net in lidarr_docker_external_networks %}
-  {{ net }}:
+{% for network in lidarr_docker_networks %}
+  {{ network }}:
     external: true
-  {% endfor %}
+{% endfor %}
 {% endif %}
