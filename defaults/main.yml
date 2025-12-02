@@ -110,7 +110,7 @@ lidarr_docker_networks: []
 
 # The ports is used to define the port mappings between the host machine and the containers
 lidarr_docker_ports:
-  - '8989:8989'
+  - '8686:8686'
 
 # Defines the decisions Compose makes when it starts to pull images. Possible values are
 # always, never, missing, build, daily, weekly, every_<duration>
